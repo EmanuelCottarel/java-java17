@@ -54,7 +54,6 @@ public class Stream_03_Test {
 		// TODO construire une chaîne contenant les prénoms des clients triés et séparés
 		// par le caractère "|"
 		String result = customers.stream().sorted(Comparator.comparing(Customer::getFirstname)).map(Customer::getFirstname).collect(Collectors.joining("|"));
-
 		assertThat(result, is("Alexandra|Cyril|Johnny|Marion|Sophie"));
 	}
 

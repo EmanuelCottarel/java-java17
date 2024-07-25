@@ -3,9 +3,14 @@ package java17.ex08;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Test;
@@ -16,7 +21,7 @@ import org.junit.Test;
 public class Stream_08_Test {
 
     // Chemin vers un fichier de données des naissances
-    private static final String NAISSANCES_DEPUIS_1900_CSV = "./naissances_depuis_1900.csv";
+    private static final String NAISSANCES_DEPUIS_1900_CSV = "src/test/java/java17/ex08/naissances_depuis_1900.csv";
 
     // Structure modélisant les informations d'une ligne du fichier
     class Naissance {
@@ -61,10 +66,16 @@ public class Stream_08_Test {
 
         // TODO utiliser la méthode java.nio.file.Files.lines pour créer un stream de lignes du fichier naissances_depuis_1900.csv
         // Le bloc try(...) permet de fermer (close()) le stream après utilisation
-        try (Stream<String> lines = null) {
+        try (Stream<String> lines = Files.lines(Paths.get(NAISSANCES_DEPUIS_1900_CSV))) {
 
             // TODO construire une MAP (clé = année de naissance, valeur = somme des nombres de naissance de l'année)
-            Map<String, Integer> result = null;
+            Map<String, Integer> result =  lines
+                    .skip(1)
+                    .map(line -> line.split(";"))
+                    .collect(Collectors.groupingBy(
+                            tokens -> tokens[0],
+                            Collectors.summingInt(tokens -> Integer.parseInt(tokens[1]))
+                    ));;
 
 
             assertThat(result.get("2015"), is(8097));

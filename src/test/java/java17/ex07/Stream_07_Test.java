@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -33,12 +34,12 @@ public class Stream_07_Test {
 
     // TODO créer une fonction List<Pizza> -> List<Pizza>
     // TODO seules les pizzas ayant un prix >= 1000 sont conservées
-    Function<List<Pizza>, List<Pizza>> filterPizza = null;
+    Function<List<Pizza>, List<Pizza>> filterPizza = pizzas -> pizzas.stream().filter(pizza -> pizza.getPrice() >= 1000).toList();
 
     // TODO créer une fonction List<Pizza> -> List<Pizza>
     // TODO seules les pizzas ayant un prix >= 1000 sont conservées
     // TODO .parallel()
-    Function<List<Pizza>, List<Pizza>> parallelFilterPizza = null;
+    Function<List<Pizza>, List<Pizza>> parallelFilterPizza = pizzas -> pizzas.stream().filter(pizza -> pizza.getPrice() >= 1000).parallel().toList();;
 
     // TODO exécuter le test pour visualiser le temps d'exécution
     @Test
@@ -50,6 +51,7 @@ public class Stream_07_Test {
     // De mon côté :
     // INFO: arrayList=21 ms
     // INFO: linkedList=21 ms
+    //13 ms VS 18ms -> le traitement avec linkedList semble plus lent
 
 
     // TODO exécuter le test pour visualiser le temps d'exécution
@@ -61,6 +63,7 @@ public class Stream_07_Test {
     // Que constatez-vous ?
     // INFO: arrayList=15 ms
     // INFO: linkedList=83 ms
+    // 7ms vs 13ms -> le traitement avec linkedList semble plus lent
 
     public void arraylist_vs_linkedlist(Function<List<Pizza>, List<Pizza>> fn) throws Exception {
 
